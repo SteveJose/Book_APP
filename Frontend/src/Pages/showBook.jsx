@@ -24,8 +24,7 @@ const showBook = () => {
       });
   }, [id]);
 
-
- // Log the value of the book object
+  // Log the value of the book object
   return (
     <div className="p-4">
       <ExitButton />
