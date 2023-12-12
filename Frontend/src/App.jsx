@@ -5,6 +5,7 @@ import AddBook from "./Pages/AddBook.jsx";
 import EditBook from "./Pages/EditBook.jsx";
 import ShowBook from "./Pages/showBook.jsx";
 import DeleteBook from "./Pages/DeleteBook.jsx";
+import SignUp from "./Pages/SignUp.jsx";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Route path="/books/details/:id" element={<ShowBook />} />
       <Route path="/books/edit/:id" element={<EditBook />} />
       <Route path="/books/delete/:id" element={<DeleteBook />} />
+      <Route path="/signup" element={<SignUp />} />
     </Routes>
   );
 };
