@@ -4,6 +4,7 @@ import ExitButton from "../Component/ExitButton";
 import { Spinner } from "../Component/Spinner";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { endpoints } from "../utils/urls";
 
 const EditBook = () => {
   const [form, setForm] = useState({
@@ -15,25 +16,27 @@ const EditBook = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
+  const { updateBook,getBookById } = endpoints;
 
   useEffect(() => {
+    const handleGetBook = async () => {
+      setLoading(true);
+      axios
+        .get(getBookById(id))
+        .then((res) => {
+          setLoading(false);
+          setForm(res.data); // Update the form state with the book data
+        })
+        .catch((err) => {
+          setLoading(false);
+          alert("An error occurred. Please check the console.");
+          console.log(err);
+        });
+    };
+
     handleGetBook();
   }, []); // Empty dependency array ensures that the effect runs only once, when the component mounts
 
-  const handleGetBook = () => {
-    setLoading(true);
-    axios
-      .get(`http://localhost:5555/books/${id}`)
-      .then((res) => {
-        setLoading(false);
-        setForm(res.data); // Update the form state with the book data
-      })
-      .catch((err) => {
-        setLoading(false);
-        alert("An error occurred. Please check the console.");
-        console.log(err);
-      });
-  };
   function handleChange(event) {
     const { id, value } = event.target;
     setForm((prev) => {
@@ -48,7 +51,7 @@ const EditBook = () => {
     event.preventDefault();
     setLoading(true);
     axios
-      .put(`http://localhost:5555/books/${id}`, form) // Use the book ID in the URL
+      .put(updateBook(id), form) // Use the book ID in the URL
       .then((res) => {
         console.log(res.data);
         setLoading(false);

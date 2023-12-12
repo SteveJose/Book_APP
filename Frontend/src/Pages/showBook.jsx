@@ -3,16 +3,18 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import ExitButton from "../Component/ExitButton";
 import { Spinner } from "../Component/Spinner.jsx";
+import { endpoints } from "../utils/urls.js";
 
 const showBook = () => {
   const [book, setBook] = useState();
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
+  const { getBookById } = endpoints;
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`http://localhost:5555/books/${id}`)
+      .get(getBookById(id))
       .then((res) => {
         console.log(res.data); // Log the response data
         setBook(res.data);

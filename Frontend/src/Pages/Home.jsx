@@ -6,15 +6,17 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { BsInfoCircle } from "react-icons/bs";
 import { MdOutlineAddBox, MdOutlineDelete } from "react-icons/md";
+import { endpoints } from "../utils/urls.js";
 
 const Home = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { getAllBooks } = endpoints;
   useEffect(() => {
     setLoading(true);
-  
+
     axios
-      .get("http://localhost:5555/books")
+      .get(getAllBooks)
       .then((res) => {
         // console.log(res.data.books); // Log the books array
         setBooks(res.data.books); // Update the state with the books array
@@ -47,7 +49,9 @@ const Home = () => {
               <th className="border border-slate-600 p-4 rounded-md max-md:hidden ">
                 Publish Year
               </th>
-              <th className="border border-slate-600 p-4 rounded-md max-md:hidden ">Genre</th>
+              <th className="border border-slate-600 p-4 rounded-md max-md:hidden ">
+                Genre
+              </th>
               <th className="border border-slate-600 p-4 rounded-md ">
                 Operation
               </th>
