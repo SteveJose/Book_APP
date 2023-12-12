@@ -4,6 +4,7 @@ import ExitButton from "../Component/ExitButton";
 import { Spinner } from "../Component/Spinner";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { endpoints } from "../utils/urls";
 
 const CreateBook = () => {
   const [form, setForm] = useState({
@@ -14,6 +15,7 @@ const CreateBook = () => {
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { addBook } = endpoints;
 
   function handleChange(event) {
     const { id, value } = event.target;
@@ -28,7 +30,7 @@ const CreateBook = () => {
   const handleSaveBook = async () => {
     setLoading(true);
     axios
-      .post("http://localhost:5555/books", form)
+      .post(addBook, form)
       .then((res) => {
         console.log(res.data);
         setLoading(false);
