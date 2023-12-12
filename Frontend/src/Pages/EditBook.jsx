@@ -8,29 +8,32 @@ import { useNavigate, useParams } from "react-router-dom";
 const EditBook = () => {
   const [form, setForm] = useState({
     title: "",
-    description: "",
     author: "",
-    published: "",
+    publishyear: "",
+    genre: "",
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
-  useEffect(() => {
-  setLoading(true);
-  axios
-    .post("http://localhost:5555/books", form)
-    .then((res) => {
-      console.log(res.data);
-      setLoading(false);
-      navigate("/");
-    })
-    .catch((err) => {
-      setLoading(false);
-      alert("An Error happened. Try check console");
-      console.log(err);
-    });
-}, []);
 
+  useEffect(() => {
+    handleGetBook();
+  }, []); // Empty dependency array ensures that the effect runs only once, when the component mounts
+
+  const handleGetBook = () => {
+    setLoading(true);
+    axios
+      .get(`http://localhost:5555/books/${id}`)
+      .then((res) => {
+        setLoading(false);
+        setForm(res.data); // Update the form state with the book data
+      })
+      .catch((err) => {
+        setLoading(false);
+        alert("An error occurred. Please check the console.");
+        console.log(err);
+      });
+  };
   function handleChange(event) {
     const { id, value } = event.target;
     setForm((prev) => {
@@ -41,10 +44,11 @@ const EditBook = () => {
     });
   }
 
-  const handleSaveBook = async () => {
+  const handleEditBook = async () => {
+    event.preventDefault();
     setLoading(true);
     axios
-      .post("http://localhost:5555/books", form)
+      .put(`http://localhost:5555/books/${id}`, form) // Use the book ID in the URL
       .then((res) => {
         console.log(res.data);
         setLoading(false);
@@ -52,7 +56,7 @@ const EditBook = () => {
       })
       .catch((err) => {
         setLoading(false);
-        alert("An Error happened. Try check console");
+        alert("An error occurred. Please check the console.");
         console.log(err);
       });
   };
@@ -65,7 +69,7 @@ const EditBook = () => {
         <Spinner />
       ) : (
         <form
-          onSubmit={handleSaveBook}
+          onSubmit={handleEditBook}
           className="flex flex-col border-2 border-sky-400 rounded-xl w-[600px] p-4 mx-auto"
         >
           <div className="my-4">
@@ -129,11 +133,7 @@ const EditBook = () => {
               onChange={handleChange}
             />
           </div>
-          <button
-            type="submit"
-            className="p-2 bg-sky-300 m-8"
-            onClick={handleSaveBook}
-          >
+          <button type="submit" className="p-2 bg-sky-300 m-8">
             Save
           </button>
         </form>
@@ -141,8 +141,5 @@ const EditBook = () => {
     </div>
   );
 };
-);};
-
 
 export default EditBook;
-
