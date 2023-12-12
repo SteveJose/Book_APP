@@ -16,7 +16,7 @@ const Home = () => {
     axios
       .get("http://localhost:5555/books")
       .then((res) => {
-        console.log(res.data.books); // Log the books array
+        // console.log(res.data.books); // Log the books array
         setBooks(res.data.books); // Update the state with the books array
         setLoading(false);
       })
